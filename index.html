@@ -50,8 +50,8 @@
             display: none;
             justify-content: center; /* Center the image horizontally */
             align-items: center; /* Center the image vertically */
-          /*  min-height: 200px; /* Set a minimum height */
-            /*width: 100%;
+            min-height: 200px; /* Set a minimum height */
+            width: 100%;
         }
 
         #generated-image {
@@ -78,15 +78,16 @@
             margin-bottom: 10px;
         }
         .download-button {
-           padding: 10px 20px;
+           padding: 0px 0px;
            display: inline-flex;
            align-items: center;
            margin-right: 10px; /* Add some space between buttons */
-          
+           
         }
 
         .download-button i {
            margin-left: 5px; /* Add space between icon and text */
+           bottom-left: 20px;
         }
 
         #telegram-button {
@@ -118,12 +119,12 @@
         <div id="image-container">
           <img id="generated-image" src="" alt="Your Image Here">
             <h3> Here Is Your Image  </h3>
-        </div>
-
-        <div style="display: flex; justify-content: center;">
             <a id="download-link" href="#" download="generated_image.png" class="download-button">
                 Download <i class="fas fa-download"></i>
             </a>
+        </div>
+
+        <div style="display: flex; justify-content: center;">
             <button id="telegram-button">Join Telegram</button>
         </div>
     </div>
