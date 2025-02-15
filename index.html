@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Easy Tech</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #111; /* Default: Night Mode */
+            color: #eee;
+            transition: background-color 0.5s, color 0.5s; /* Smooth transition for theme change */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh; /* Ensure full viewport height */
+            margin: 0; /* Remove default margins */
+        }
+
+        h1 {
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: neon-glow 5.5s linear infinite; /* Neon glow animation */
+        }
+        h3 {
+            text-align: center;
+        }
+
+        @keyframes neon-glow {
+            0% { text-shadow: 0 0 10px #0f0, 0 0 20px #0f0, 0 0 30px #0f0; }
+            25% { text-shadow: 0 0 10px #00f, 0 0 20px #00f, 0 0 30px #00f; }
+            50% { text-shadow: 0 0 10px #f00, 0 0 20px #f00, 0 0 30px #f00; }
+            75% { text-shadow: 0 0 10px #f0f, 0 0 20px #f0f, 0 0 30px #f0f; }
+            100% { text-shadow: 0 0 10px #0f0, 0 0 20px #0f0, 0 0 30px #0f0; }
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80%; /* Adjust as needed */
+            max-width: 800px;
+        }
+
+        #image-container {
+            border: 5px solid; /* Initial border */
+            animation: neon-glow 5s linear infinite; /* Neon glow animation */
+            margin-bottom: 20px;
+            display: none;
+            justify-content: center; /* Center the image horizontally */
+            align-items: center; /* Center the image vertically */
+            min-height: 200px; /* Set a minimum height */
+            width: 100%;
+        }
+
+        #generated-image {
+            max-width: 100%;
+            max-height: 400px; /* Set a maximum height to prevent overflow */
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #111; /* Darker background for night mode */
+            color: #eee;
+            border: none;
+            
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #0f0; /* Green button */
+            color: #111;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        .download-button {
+           padding: 10px 20px;
+           display: inline-flex;
+           align-items: center;
+           margin-right: 10px; /* Add some space between buttons */
+          
+        }
+
+        .download-button i {
+           margin-left: 5px; /* Add space between icon and text */
+        }
+
+        #telegram-button {
+           padding: 10px 20px;
+           background-color: #2CA5E0; /* Telegram blue */
+        }
+
+        #theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1.9em; /* Increase size for better visibility */
+            color: #eee;
+        }
+
+
+
+    </style>
+</head>
+<body>
+    <h1>Neon Easy Tech</h1>
+    <div class="container">
+        <input type="text" id="text-input" placeholder="Enter text to generate">
+        <button id="generate-button">Generate</button>
+
+        <div id="image-container">
+          <img id="generated-image" src="" alt="Your Image Here">
+            <h3> Here Is Your Image  </h3>
+        </div>
+
+        <div style="display: flex; justify-content: center;">
+            <a id="download-link" href="#" download="generated_image.png" class="download-button">
+                Download <i class="fas fa-download"></i>
+            </a>
+            <button id="telegram-button">Join Telegram</button>
+        </div>
+    </div>
+    <button id="theme-toggle">☀️</button>  <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script> <script>
+        const textInput = document.getElementById('text-input');
+        const generateButton = document.getElementById('generate-button');
+        const imageContainer = document.getElementById('image-container');
+        const generatedImage = document.getElementById('generated-image');
+        const downloadLink = document.getElementById('download-link');
+        const telegramButton = document.getElementById('telegram-button');
+        const themeToggle = document.getElementById('theme-toggle');
+        let isDarkMode = true; // Track the current theme
+
+        generateButton.addEventListener('click', () => {
+            const text = textInput.value;
+            if (text.trim() === "") {
+                alert("Please enter text to generate.");
+                return;
+            }
+
+            const apiUrl = `https://text-to-image.bjcoderx.workers.dev/?text=${encodeURIComponent(text)}`;
+
+            fetch(apiUrl)
+                .then(response => response.blob())
+                .then(blob => {
+                    const imageUrl = URL.createObjectURL(blob);
+                    generatedImage.src = imageUrl;
+                    downloadLink.href = imageUrl;
+
+                    textInput.value = ""; // Clear the input field
+                    imageContainer.style.display = 'block'; // Show the image container
+
+                })
+                .catch(error => {
+                    console.error("Error generating image:", error);
+                    alert("Error generating image. Please try again.");
+                });
+        });
+
+        telegramButton.addEventListener('click', () => {
+            window.open('https://t.me/NeonEasyTech', '_blank');
+        });
+
+        themeToggle.addEventListener('click', () => {
+            isDarkMode = !isDarkMode; // Toggle the theme
+
+            if (isDarkMode) {
+                document.body.style.backgroundColor = '#111';
+                document.body.style.color = '#eee';
+                themeToggle.textContent = '☀️'; // Sun for Day Mode
+            } else {
+                document.body.style.backgroundColor = '#eee';
+                document.body.style.color = '#111';
+                themeToggle.textContent = '🌙'; // Moon for Night Mode
+            }
+        });
+    </script>
+</body>
+</html>
